@@ -39,6 +39,11 @@ class tictactoe:
         print(f" {self.board[3]} | {self.board[4]} | {self.board[5]}\n---+---+---")
         print(f" {self.board[6]} | {self.board[7]} | {self.board[8]}")
     
+    def print_rules(self):
+        print("Python tic-tac-toe\n")
+        print("To play, when it's your turn, give a number corresponding to a place on the board")
+        print(" 0 | 1 | 2 \n---+---+---\n 3 | 4 | 5 \n---+---+---\n 6 | 7 | 8 ")
+    
     def reset(self):                                                # function to reset the board
         self.board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
         self.score_per_row = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -52,9 +57,11 @@ class tictactoe:
         print(f"Game Over!!! Player {player} won!!!")
     
     def update(self, player: int, place: int) -> bool:      # player can be 1 or 2, place refers to place on board
-        if place < 0 or place > 8:
+        if place < 0 or place > 8:                          # if place number is invalid, exit the function
             return False
-        self.board[place] = 'X' if player == 1 else 'O'
+        if self.board[place] != ' ':                        # if a piece is already placed in the current place, exit the function
+            return False
+        self.board[place] = 'X' if player == 1 else 'O'     # place either X (player 1) or O (player 2)
         player_update = 3 - 2*player                # convert 1 -> 1, 2 -> -1 (useful for updating score per row)
         for row in rows_per_place[place]:           # update scores in all rows which contain the given place
             self.score_per_row[row] += player_update
