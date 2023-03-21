@@ -42,7 +42,7 @@ class tictactoe:
     def print_rules(self):
         print("Python tic-tac-toe\n")
         print("To play, when it's your turn, give a number corresponding to a place on the board")
-        print(" 0 | 1 | 2 \n---+---+---\n 3 | 4 | 5 \n---+---+---\n 6 | 7 | 8 ")
+        print(" 0 | 1 | 2 \n---+---+---\n 3 | 4 | 5 \n---+---+---\n 6 | 7 | 8 \n")
     
     def reset(self):                                                # function to reset the board
         self.board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
@@ -68,9 +68,25 @@ class tictactoe:
             if self.score_per_row[row] == 3 or self.score_per_row[row] == -3:
                 self.game_over(player)
     
+    def single_turn(self, player: int):                     # simulate a single turn of the game
+        self.print()
+        place_str = input(f"Player {player}'s turn: ")
+        while place_str.isdigit() == False or self.update(player, int(place_str)) == False:
+            print("Invalid input: ", end='')
+            place_str = input(f"Player {player}'s turn: ")
+            if place_str.isdigit():
+                place = int(place_str)
+    
+    def game_loop(self):
+        self.reset()
+        self.print_rules()
+        i = 0
+        while i < 9 and self.gameover == False:
+            self.single_turn(1 + i%2)
+            i += 1
+        self.game_over(0)
+        self.reset()
 
 if __name__ == "__main__":
     t = tictactoe()
-    t.print()
-    t.update(1, 0)
-    t.print()
+    t.game_loop()
