@@ -16,7 +16,6 @@
 
 
 # making an array of all the rows a place is contained in
-
 rows_per_place = (
     (0, 1, 5),          # for example, place 0 is contained in rows 0, 1 and 5
     (1, 6),             # and place 1 is contained in rows 1 and 6
@@ -33,8 +32,38 @@ class tictactoe:
     def __init__(self):                                             # constructor
         self.board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']  # game board
         self.score_per_row = [0, 0, 0, 0, 0, 0, 0, 0]               # score is maintained individually for each row
+        self.gameover = False                                       # checks whether game is over
 
     def print(self):                                                # function to print the board
         print(f" {self.board[0]} | {self.board[1]} | {self.board[2]}\n---+---+---")
         print(f" {self.board[3]} | {self.board[4]} | {self.board[5]}\n---+---+---")
         print(f" {self.board[6]} | {self.board[7]} | {self.board[8]}")
+    
+    def reset(self):                                                # function to reset the board
+        self.board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        self.score_per_row = [0, 0, 0, 0, 0, 0, 0, 0]
+        self.gameover = False
+    
+    def game_over(self, player):
+        self.gameover = True
+        if player == 0:
+            print("Game Over!!! It's a draw...")
+            return
+        print(f"Game Over!!! Player {player} won!!!")
+    
+    def update(self, player: int, place: int) -> bool:      # player can be 1 or 2, place refers to place on board
+        if place < 0 or place > 8:
+            return False
+        self.board[place] = 'X' if player == 1 else 'O'
+        player_update = 3 - 2*player                # convert 1 -> 1, 2 -> -1 (useful for updating score per row)
+        for row in rows_per_place[place]:           # update scores in all rows which contain the given place
+            self.score_per_row[row] += player_update
+            if self.score_per_row[row] == 3 or self.score_per_row[row] == -3:
+                self.game_over(player)
+    
+
+if __name__ == "__main__":
+    t = tictactoe()
+    t.print()
+    t.update(1, 0)
+    t.print()
