@@ -63,7 +63,7 @@ class tictactoe:
     def d_game_over(self, player):
         if self.gameover == True:
             return
-        self.print()
+        self.d_print()
         self.gameover = True
         if player == 0:
             print("Game Over!!! It's a draw...")
