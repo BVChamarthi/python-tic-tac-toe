@@ -30,6 +30,17 @@ class tictactoe:
         (0, 3, 7)
     )
 
+    places_per_row = (
+        (0, 4, 8),
+        (0, 1, 2),
+        (3, 4, 5),
+        (6, 7, 8),
+        (2, 4, 6),
+        (0, 3, 6),
+        (1, 4, 7),
+        (2, 5, 8)
+    )
+
     def __init__(self):                                             # constructor
         self._board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] # game board
         self._score_per_row = [0, 0, 0, 0, 0, 0, 0, 0]              # score is maintained individually for each row
@@ -73,7 +84,7 @@ class tictactoe:
     # update(player, place, game_over)
     # player can be 1 or 2, place refers to place on board, game_over is function to be called when game is over
     # game_over(player): Displays win message of player.
-    def update(self, player: int, place: int, game_over) -> bool:
+    def update(self, player: int, place: int, game_over):
         self.board[place] = 'X' if player == 1 else 'O'     # place either X (player 1) or O (player 2)
         player_update = 3 - 2*player                        # convert 1 -> 1, 2 -> -1 (useful for updating score per row)
         for row in self.rows_per_place[place]:              # update scores in all rows which contain the given place
@@ -116,6 +127,22 @@ class tictactoe:
     # default game loop function for console version of the game
     def d_game_loop(self):
         self.game_loop(self.d_print_rules, self.d_print, self.d_input, self.d_game_over)
+
+    #-----------------------------------------------------------------------------------
+
+    # functions for playing against the computer (computer is player 1)
+
+    # stop_line(gm_ovr)
+    # function to stop player 2 from completing a line
+    # gm_ovr(): function to call when game is over
+    def stop_line(self, gm_ovr) -> bool:
+        for i in range(8):
+            if self._score_per_row[i] == -2:
+                for j in self.places_per_row[i]:
+                    if self.board[j] == ' ':
+                        self.update(1, j, gm_ovr)
+                        return True
+
 
 if __name__ == "__main__":
     t = tictactoe()
