@@ -73,7 +73,7 @@ class tictactoe:
     # update(player, place, game_over)
     # player can be 1 or 2, place refers to place on board, game_over is function to be called when game is over
     # game_over(player): Displays win message of player.
-    def update(self, player: int, place: int, game_over: callable[[int],] = d_game_over) -> bool:
+    def update(self, player: int, place: int, game_over) -> bool:
         self.board[place] = 'X' if player == 1 else 'O'     # place either X (player 1) or O (player 2)
         player_update = 3 - 2*player                        # convert 1 -> 1, 2 -> -1 (useful for updating score per row)
         for row in self.rows_per_place[place]:              # update scores in all rows which contain the given place
@@ -101,13 +101,13 @@ class tictactoe:
     # pr(): function to print/update the board display (get board data by directly accessing it from the class)
     # inp(player): get player input
     # gm_ovr(player): display game_over msg
-    def game_loop(self, pr_rls: callable[[],], pr: callable[[],], inp: callable[[int],int], gm_ovr: callable[[int],]):
+    def game_loop(self, pr_rls, pr, inp, gm_ovr):
         self.reset()
         pr_rls()
         i = 0
         while i < 9 and self.gameover == False:
             pr()
-            self.update(1 + i%2, inp(1 + i%2))
+            self.update(1 + i%2, inp(1 + i%2), gm_ovr)
             i += 1
         gm_ovr(0)
         self.reset()
